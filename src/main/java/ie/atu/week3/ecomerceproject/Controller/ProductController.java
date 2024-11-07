@@ -49,7 +49,7 @@ public class ProductController {
         return ResponseEntity.ok(prod);
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("/product/id/{id}")
     public ResponseEntity<Product> updateProductById(@PathVariable String id, @RequestBody Product product){
         try{
             Product existingProd = productService.updateProduct(id, product);
@@ -59,7 +59,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/product/{name}")
+    @PutMapping("/product/name/{name}")
     public ResponseEntity<List<Product>> updateProductByName(@PathVariable String name, @RequestBody Product product){
         try{
             List<Product> existingProd = productService.updateProductByName(name, product);
