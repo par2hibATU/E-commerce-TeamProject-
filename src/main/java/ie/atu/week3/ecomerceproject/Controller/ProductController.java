@@ -3,9 +3,11 @@ package ie.atu.week3.ecomerceproject.Controller;
 
 import ie.atu.week3.ecomerceproject.DTO.Product;
 import ie.atu.week3.ecomerceproject.Service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +24,10 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product addProduct(@RequestBody Product product){
+    public Product addProduct(@Valid @RequestBody Product product) {
         return productService.addProduct(product);
     }
+
 
     @GetMapping
     public List<Product> getAllProducts(){
@@ -44,13 +47,13 @@ public class ProductController {
     }
 
     @GetMapping("/{avail}")
-    public ResponseEntity<List<Product>> getProductByAvailability(@PathVariable boolean available){
+    public ResponseEntity<List<Product>> getProductByAvailability(@PathVariable String available){
         List<Product> prod = productService.getProductByAvailability(available);
         return ResponseEntity.ok(prod);
     }
 
     @PutMapping("/product/id/{id}")
-    public ResponseEntity<Product> updateProductById(@PathVariable String id, @RequestBody Product product){
+    public ResponseEntity<Product> updateProductById( @PathVariable String id, @Valid @RequestBody Product product){
         try{
             Product existingProd = productService.updateProduct(id, product);
             return ResponseEntity.ok(existingProd);
@@ -60,7 +63,7 @@ public class ProductController {
     }
 
     @PutMapping("/product/name/{name}")
-    public ResponseEntity<List<Product>> updateProductByName(@PathVariable String name, @RequestBody Product product){
+    public ResponseEntity<List<Product>> updateProductByName(@Valid @PathVariable String name, @RequestBody Product product){
         try{
             List<Product> existingProd = productService.updateProductByName(name, product);
             return ResponseEntity.ok(existingProd);

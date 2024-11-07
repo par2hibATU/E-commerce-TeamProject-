@@ -9,5 +9,5 @@ import java.util.List;
 public interface ProductRepo extends MongoRepository<Product, String> {
     List<Product> findByName(String name);
 
-    List<Product> findByAvailable(boolean available);
+    List<Product> findByAvailable(String available);
 }
