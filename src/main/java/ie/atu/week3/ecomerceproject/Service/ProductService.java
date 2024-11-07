@@ -28,7 +28,7 @@ public class ProductService {
         return productRepo.findById(id).get();
     }
 
-    public List<Product> getProductByAvailability(boolean available){
+    public List<Product> getProductByAvailability(String available){
         return productRepo.findByAvailable(available);
     }
 
@@ -49,7 +49,7 @@ public class ProductService {
         existingProduct.setPrice(product.getPrice());
         existingProduct.setCategory(product.getCategory());
         existingProduct.setReleaseDate(product.getReleaseDate());
-        existingProduct.setAvailable(product.isAvailable());
+        existingProduct.setAvailable(product.getAvailable());
         existingProduct.setQuantity(product.getQuantity());
         return productRepo.save(existingProduct);
     }
@@ -66,7 +66,7 @@ public class ProductService {
             existingProduct.setPrice(product.getPrice());
             existingProduct.setCategory(product.getCategory());
             existingProduct.setReleaseDate(product.getReleaseDate());
-            existingProduct.setAvailable(product.isAvailable());
+            existingProduct.setAvailable(product.getAvailable());
             existingProduct.setQuantity(product.getQuantity());
             productRepo.save(existingProduct);
         }
