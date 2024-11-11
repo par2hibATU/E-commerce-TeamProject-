@@ -1,4 +1,3 @@
-Parthib Barua
-Mikaela Diaz
+Parthib Barua, Mikaela Diaz
 
 This project is an E-commerce platform
