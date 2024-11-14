@@ -81,6 +81,12 @@ public class ProductController {
         return ResponseEntity.ok(result);
     }
 
+    //To establish connection with Customer service (will be called by CustomerClient to display this message and ensure it is connected)
+    @GetMapping("/received")
+    public String message(){
+        return "Connection Established with Product Service";
+    }
+
 
 
 }
