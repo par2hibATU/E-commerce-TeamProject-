@@ -64,7 +64,6 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.releaseDate").value("2010-12-05"))
                 .andExpect(jsonPath("$.available").value("true"))
                 .andExpect(jsonPath("$.quantity").value(50));
-
     }
 
     @Test
