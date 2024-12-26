@@ -40,7 +40,7 @@ public class Product {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date releaseDate;
+    private String releaseDate;
 
     @NotNull(message = "You should mark if the item is available or not. If available type 'true', otherwise 'false'")
     @Pattern(regexp = "true|false", message = "Available must be either 'true' or 'false' in lowercase")
