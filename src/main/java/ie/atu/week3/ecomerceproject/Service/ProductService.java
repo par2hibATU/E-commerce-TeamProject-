@@ -2,6 +2,7 @@ package ie.atu.week3.ecomerceproject.Service;
 
 import ie.atu.week3.ecomerceproject.DTO.Product;
 import ie.atu.week3.ecomerceproject.Repository.ProductRepo;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -13,11 +14,21 @@ public class ProductService {
     @Autowired
     private ProductRepo productRepo;
 
+    private final RabbitTemplate rabbitTemplate;
+
     @Autowired
-    private AmqpTemplate amqpTemplate;
+    public ProductService(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     public Product addProduct(Product product){
-        return productRepo.save(product);
+
+        Product savedProduct = productRepo.save(product);
+
+        // Publish to RabbitMQ
+        rabbitTemplate.convertAndSend("productQueue", savedProduct);
+
+        return savedProduct;
     }
 
     public List<Product> getAllProducts(){
