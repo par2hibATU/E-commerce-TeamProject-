@@ -14,19 +14,12 @@ public class ProductService {
     @Autowired
     private ProductRepo productRepo;
 
-    private final RabbitTemplate rabbitTemplate;
 
-    @Autowired
-    public ProductService(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
-    }
 
     public Product addProduct(Product product){
 
         Product savedProduct = productRepo.save(product);
 
-        // Publish to RabbitMQ
-        rabbitTemplate.convertAndSend("productQueue", savedProduct);
 
         return savedProduct;
     }
@@ -65,7 +58,7 @@ public class ProductService {
         existingProduct.setReleaseDate(product.getReleaseDate());
         existingProduct.setAvailable(product.getAvailable());
         existingProduct.setQuantity(product.getQuantity());
-        rabbitTemplate.convertAndSend("productQueue", existingProduct);
+
         return productRepo.save(existingProduct);
     }
     //updates by Name
@@ -83,8 +76,8 @@ public class ProductService {
             existingProduct.setReleaseDate(product.getReleaseDate());
             existingProduct.setAvailable(product.getAvailable());
             existingProduct.setQuantity(product.getQuantity());
-            rabbitTemplate.convertAndSend("productQueue", existingProduct);
             productRepo.save(existingProduct);
+
         }
         return QueryProd;
     }

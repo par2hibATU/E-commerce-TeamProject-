@@ -17,12 +17,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-
+    @Autowired
+    private final RabbitTemplate rabbitTemplate;
 
     @Autowired
     private final ProductService productService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(RabbitTemplate rabbitTemplate, ProductService productService) {
+        this.rabbitTemplate = rabbitTemplate;
         this.productService = productService;
     }
 
@@ -32,6 +34,7 @@ public class ProductController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Product> addProduct(@Valid @RequestBody Product product) {
         Product savedProduct = productService.addProduct(product);
+        rabbitTemplate.convertAndSend("productQueue", savedProduct);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
@@ -63,6 +66,7 @@ public class ProductController {
     public ResponseEntity<Product> updateProductById( @PathVariable String id, @Valid @RequestBody Product product){
         try{
             Product existingProd = productService.updateProduct(id, product);
+            rabbitTemplate.convertAndSend("productQueue", existingProd);
             return ResponseEntity.ok(existingProd);
         }catch (RuntimeException e){
             return ResponseEntity.notFound().build();
