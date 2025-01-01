@@ -2,8 +2,10 @@ package ie.atu.week3.ecomerceproject.Controller;
 
 
 import ie.atu.week3.ecomerceproject.DTO.Product;
+import ie.atu.week3.ecomerceproject.RabbitMQConfig;
 import ie.atu.week3.ecomerceproject.Service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +17,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
+
     @Autowired
     private final ProductService productService;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
+
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
