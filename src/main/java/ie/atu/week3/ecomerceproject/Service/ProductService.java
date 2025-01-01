@@ -32,6 +32,7 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts(){
+
         return productRepo.findAll();
     }
 
@@ -47,9 +48,7 @@ public class ProductService {
         return productRepo.findByAvailable(available);
     }
 
-    public Product addproduct(Product product){
-        return productRepo.save(product);
-    }
+
 
     //Updates by ID
     public Product updateProduct(String id, Product product){
@@ -66,6 +65,7 @@ public class ProductService {
         existingProduct.setReleaseDate(product.getReleaseDate());
         existingProduct.setAvailable(product.getAvailable());
         existingProduct.setQuantity(product.getQuantity());
+        rabbitTemplate.convertAndSend("productQueue", existingProduct);
         return productRepo.save(existingProduct);
     }
     //updates by Name
@@ -83,6 +83,7 @@ public class ProductService {
             existingProduct.setReleaseDate(product.getReleaseDate());
             existingProduct.setAvailable(product.getAvailable());
             existingProduct.setQuantity(product.getQuantity());
+            rabbitTemplate.convertAndSend("productQueue", existingProduct);
             productRepo.save(existingProduct);
         }
         return QueryProd;
