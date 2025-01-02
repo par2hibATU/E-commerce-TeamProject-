@@ -26,7 +26,7 @@ public class ProductService {
         Product savedProduct = productRepo.save(product);
 
         // Publish to RabbitMQ
-        rabbitTemplate.convertAndSend("productQueue", savedProduct);
+        rabbitTemplate.convertAndSend("productQueue", product);
 
         return savedProduct;
     }
@@ -65,7 +65,7 @@ public class ProductService {
         existingProduct.setReleaseDate(product.getReleaseDate());
         existingProduct.setAvailable(product.getAvailable());
         existingProduct.setQuantity(product.getQuantity());
-        rabbitTemplate.convertAndSend("productQueue", existingProduct);
+        rabbitTemplate.convertAndSend("productQueue", product);
         return productRepo.save(existingProduct);
     }
     //updates by Name
@@ -83,7 +83,7 @@ public class ProductService {
             existingProduct.setReleaseDate(product.getReleaseDate());
             existingProduct.setAvailable(product.getAvailable());
             existingProduct.setQuantity(product.getQuantity());
-            rabbitTemplate.convertAndSend("productQueue", existingProduct);
+            rabbitTemplate.convertAndSend("productQueue", product);
             productRepo.save(existingProduct);
         }
         return QueryProd;
