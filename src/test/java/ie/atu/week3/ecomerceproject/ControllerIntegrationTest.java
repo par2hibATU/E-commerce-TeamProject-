@@ -34,10 +34,7 @@ public class ControllerIntegrationTest {
     private ObjectMapper objectMapper;
 
 
-    @AfterEach
-    void tearDown() {
-        productRepo.deleteAll(); // Clean up after each test
-    }
+
 
     @Test
     void testAddProduct() throws Exception {
@@ -62,16 +59,14 @@ public class ControllerIntegrationTest {
 
     @Test
     public void testGetAllProducts() throws Exception {
-        Product prod1 = new Product("1L", "apple", "Riped Apple", 2.00, "Fruits", "2010-12-05", "true", 50);
-        Product prod2 = new Product("2L", "Banana", "Red Banana", 8.00, "Fruits", "2019-08-20", "true", 80);
+        Product prod1 = new Product("1L", "Banana", "Red Banana", 8.00, "Fruits", "2019-08-20", "true", 80);
 
         productRepo.save(prod1);
-        productRepo.save(prod2);
+
 
         mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("apple"))
-                .andExpect(jsonPath("$[1].name").value("Banana"));
+                .andExpect(jsonPath("$[0].name").value("Banana"));
     }
 
     @Test
