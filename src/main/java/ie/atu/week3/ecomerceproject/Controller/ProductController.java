@@ -29,7 +29,6 @@ public class ProductController {
 
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Product> addProduct(@Valid @RequestBody Product product) {
         Product savedProduct = productService.addProduct(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
@@ -63,9 +62,9 @@ public class ProductController {
     public ResponseEntity<Product> updateProductById( @PathVariable String id, @Valid @RequestBody Product product){
         try{
             Product existingProd = productService.updateProduct(id, product);
-            return ResponseEntity.ok(existingProd);
+            return new ResponseEntity<>(existingProd, HttpStatus.OK);
         }catch (RuntimeException e){
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -73,9 +72,9 @@ public class ProductController {
     public ResponseEntity<List<Product>> updateProductByName(@Valid @PathVariable String name, @RequestBody Product product){
         try{
             List<Product> existingProd = productService.updateProductByName(name, product);
-            return ResponseEntity.ok(existingProd);
+            return new ResponseEntity<>(existingProd, HttpStatus.OK);
         }catch (RuntimeException e){
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
