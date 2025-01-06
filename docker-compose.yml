@@ -1,0 +1,39 @@
+
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672" # RabbitMQ management UI
+      - "5672:5672"   # RabbitMQ default communication port
+    networks:
+      - ecommerce_network
+
+  product-service:
+    image: ecom-product:latest
+    ports:
+      - "9090:9091"
+    networks:
+      - ecommerce_network
+
+  customer-service:
+    image: ecom-customer:latest
+    ports:
+      - "9093:9093"
+    networks:
+      - ecommerce_network
+
+  payment-service:
+    image: ecom-payment:latest
+    ports:
+      - "9092:9092"
+    networks:
+      - ecommerce_network
+
+
+
+
+networks:
+  ecommerce_network:
+    driver: bridge

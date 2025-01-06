@@ -26,6 +26,9 @@ public class Product {
     @Id
     private String id;
 
+    @NotNull(message = "Please provide the customer ID")
+    private String customerName;
+
     @NotNull(message = "This field can not be left blank")
     private String name;
 

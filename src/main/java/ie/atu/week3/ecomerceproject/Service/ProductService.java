@@ -1,6 +1,7 @@
 package ie.atu.week3.ecomerceproject.Service;
 
 import ie.atu.week3.ecomerceproject.DTO.Product;
+import ie.atu.week3.ecomerceproject.RabbitMQConfig;
 import ie.atu.week3.ecomerceproject.Repository.ProductRepo;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class ProductService {
         Product savedProduct = productRepo.save(product);
 
         // Publish to RabbitMQ
-        rabbitTemplate.convertAndSend("productQueue", product);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE, RabbitMQConfig.ROUTING_KEY, product);
 
         return savedProduct;
     }
@@ -57,6 +58,7 @@ public class ProductService {
             throw new RuntimeException(("Product ID not Found...."));
         }
         Product existingProduct = QueryProd.get();
+        existingProduct.setCustomerName(product.getCustomerName());
         existingProduct.setName(product.getName());
         existingProduct.setId(product.getId());
         existingProduct.setDescription(product.getDescription());
@@ -65,7 +67,7 @@ public class ProductService {
         existingProduct.setReleaseDate(product.getReleaseDate());
         existingProduct.setAvailable(product.getAvailable());
         existingProduct.setQuantity(product.getQuantity());
-        rabbitTemplate.convertAndSend("productQueue", product);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE, RabbitMQConfig.ROUTING_KEY, product);
         return productRepo.save(existingProduct);
     }
     //updates by Name
@@ -75,6 +77,7 @@ public class ProductService {
             throw new RuntimeException(("Product ID not Found...."));
         }
         for( Product existingProduct : QueryProd ){
+            existingProduct.setCustomerName(product.getCustomerName());
             existingProduct.setName(product.getName());
             existingProduct.setId(product.getId());
             existingProduct.setDescription(product.getDescription());
@@ -83,7 +86,7 @@ public class ProductService {
             existingProduct.setReleaseDate(product.getReleaseDate());
             existingProduct.setAvailable(product.getAvailable());
             existingProduct.setQuantity(product.getQuantity());
-            rabbitTemplate.convertAndSend("productQueue", product);
+            rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE, RabbitMQConfig.ROUTING_KEY, product);
             productRepo.save(existingProduct);
         }
         return QueryProd;
