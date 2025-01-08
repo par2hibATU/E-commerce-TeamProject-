@@ -25,6 +25,7 @@ public class Product {
     @Valid
     @Id
     private String id;
+    private String customer;
 
     @NotNull(message = "Please provide the customer ID")
     private String customerName;
